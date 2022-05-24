@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserStocksInfo {
+    Long dealId;
     Long userId;
     Long stockId;
     Long stockCode;

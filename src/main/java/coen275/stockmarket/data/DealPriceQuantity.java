@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DealPriceQuantity {
+    Long dealId;
     Long userId;
     Long stockId;
     Double price;

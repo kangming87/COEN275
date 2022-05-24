@@ -11,7 +11,7 @@ import java.util.List;
 public interface BuyMapper {
 
     @Select({
-
+            "select * from userBuyInfo "
     })
     List<UserStocksInfo> getUserBuyStockInfo(); //选择status为1代表买未成交
 
@@ -21,7 +21,9 @@ public interface BuyMapper {
     void updateUserBuyStockInfo(DealPriceQuantity dealPriceQuantity);
 
     @Insert({
-
+            "insert into  userBuyInfo (userId ,stockId, stockCode, stockName, quantity, buyPrice)",
+            "values (#{userId, jdbcType=BIGINT}, #{stockId, jdbcType=BIGINT}, #{stockCode, jdbcType=BIGINT},",
+            "#{stockName, jdbcType=VARCHAR}, #{quantity, jdbcType=BIGINT}, #{buyPrice, jdbcType=DOUBLE})"
     })
     void insertUserBuy(UserBuyInfo userBuyInfo);
 }

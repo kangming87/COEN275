@@ -36,7 +36,7 @@ public class BuyServiceImpl implements BuyService {
         if(userInfo.getCash() >= userBuyInfo.getBuyPrice() * userBuyInfo.getQuantity()){
             userInfo.setCash(userInfo.getCash() - userBuyInfo.getBuyPrice() * userBuyInfo.getQuantity());
             List<UserStocksInfo> userStocksInfoList = userInfo.getUserStocksInfoList();
-            UserStocksInfo userStocksInfo = new UserStocksInfo(userBuyInfo.getUserId(),
+            UserStocksInfo userStocksInfo = new UserStocksInfo(0L, userBuyInfo.getUserId(),
                     userBuyInfo.getStockId(),
                     userBuyInfo.getStockCode(), userBuyInfo.getStockName(),
                     new Timestamp(System.currentTimeMillis()), userBuyInfo.getQuantity(),
