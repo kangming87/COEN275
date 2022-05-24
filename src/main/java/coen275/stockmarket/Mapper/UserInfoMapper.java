@@ -12,14 +12,14 @@ public interface UserInfoMapper {
     })
     int updateUserInfo(UserInfo userInfo);
 
-    @Select(value = "select u.username,u.password from user u where u.username=#{username}")
+    @Select(value = "select u.username,u.password from userinfo u where u.username=#{username}")
     @Results
             ({@Result(property = "username",column = "username"),
                     @Result(property = "password",column = "password")})
     UserInfo findUserByName(@Param("username") String username);
 
     //注册
-    @Insert("insert into user values(#{id},#{username},#{password})")
+    @Insert("insert into user values(#{userId},#{username},#{password})")
     //加入该注解可以保存对象后，查看对象插入id
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     void regist(UserInfo user);

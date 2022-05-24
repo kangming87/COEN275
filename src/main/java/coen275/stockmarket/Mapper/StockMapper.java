@@ -6,14 +6,20 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 public interface StockMapper {
-    @Select({
-
+    @Select(value = "select s.stockId,s.stockCode,s.stockName from stockinfo s where s.stockId=#{stockId}")
+    @Results({
+            @Result(property = "stockId",column = "stockId"),
+            @Result(property = "stockCode", column = "stockCode"),
+            @Result(property = "stockName", column = "stockName")
     })
-    StockInfo getStockInfo(Long stockId);
+    StockInfo getStockInfo(@Param("stockId") Long stockId);
 
 
-    @Select({
-
+    @Select(value = "select * from stockinfo")
+    @Results({
+            @Result(property = "stockId",column = "stockId"),
+            @Result(property = "stockCode", column = "stockCode"),
+            @Result(property = "stockName", column = "stockName")
     })
     List<StockInfo> getStockInfoList();
 }
