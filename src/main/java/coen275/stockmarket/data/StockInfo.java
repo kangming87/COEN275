@@ -11,7 +11,6 @@ public class StockInfo {
     Long stockId;
     Long stockCode;
     String stockName;
-    Double currPrice;
 
 
 }

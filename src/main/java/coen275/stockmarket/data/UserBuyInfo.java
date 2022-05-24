@@ -1,6 +1,7 @@
 package coen275.stockmarket.data;
 
 
+import coen275.stockmarket.Enum.StockStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserBuyInfo {
-    Long id;
     Long userId;
     Long stockId;
     Long stockCode;
