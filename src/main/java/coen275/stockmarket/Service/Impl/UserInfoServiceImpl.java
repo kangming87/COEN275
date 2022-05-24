@@ -17,7 +17,7 @@ public class UserInfoServiceImpl {
         LoginResult result = new LoginResult();
         result.setSuccess(false);
         try {
-            UserInfo existUser = userMapper.findUserByName(user.getUsername());
+            UserInfo existUser = userMapper.findUserByName(user.getUserName());
             if(existUser != null){
                 //如果用户名已存在
                 result.setMsg("Username is already used.");

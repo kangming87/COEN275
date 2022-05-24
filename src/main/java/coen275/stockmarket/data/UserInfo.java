@@ -16,5 +16,4 @@ public class UserInfo {
     private Double cash;
     private List<UserStocksInfo> userStocksInfoList;
 
-
 }
