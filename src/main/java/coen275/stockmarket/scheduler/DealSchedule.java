@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class DealSchedule {
+public class DealSchedule
+{
     @Autowired
     DealMatchService dealMatchService;
 
