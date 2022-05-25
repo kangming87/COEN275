@@ -5,9 +5,12 @@ import coen275.stockmarket.data.UserBuyInfo;
 import coen275.stockmarket.data.UserInfo;
 import coen275.stockmarket.data.UserStocksInfo;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Mapper
+@Component("buyMapper")
 public interface BuyMapper {
 
     @Select({

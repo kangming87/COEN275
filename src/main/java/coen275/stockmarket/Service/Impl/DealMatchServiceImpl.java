@@ -8,28 +8,30 @@ import coen275.stockmarket.data.DealPriceQuantity;
 import coen275.stockmarket.data.StockInfoDetail;
 import coen275.stockmarket.data.UserStocksInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+@Service
 public class DealMatchServiceImpl implements DealMatchService {
 
-    @Autowired
+    @Autowired(required = false)
     SaleMapper saleMapper;
 
-    @Autowired
+    @Autowired(required = false)
     BuyMapper buyMapper;
 
-    @Autowired
+    @Autowired(required = false)
     StockMapper stockMapper;
 
-    @Autowired
+    @Autowired(required = false)
     BuyService buyService;
 
-    @Autowired
+    @Autowired(required = false)
     DealMapper dealMapper;
 
-    @Autowired
+    @Autowired(required = false)
     StockDetailMapper stockDetailMapper;
 
 

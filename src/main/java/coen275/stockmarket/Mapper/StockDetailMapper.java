@@ -2,7 +2,10 @@ package coen275.stockmarket.Mapper;
 
 import coen275.stockmarket.data.StockInfoDetail;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
+@Mapper
+@Component("stockDetailMapper")
 public interface StockDetailMapper {
 
     @Update(value = "update stockinfo_detail set curr_price=#{curr_price}, max_price=#{max_price}, min_price=#{min_price}, where stockId=#{stockId}")

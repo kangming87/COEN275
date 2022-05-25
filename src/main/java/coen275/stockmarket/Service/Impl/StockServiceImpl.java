@@ -8,17 +8,19 @@ import coen275.stockmarket.data.DealPriceQuantity;
 import coen275.stockmarket.data.StockInfo;
 import coen275.stockmarket.data.StockInfoDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class StockServiceImpl implements StockService {
-    @Autowired
+    @Autowired(required = false)
     StockMapper stockMapper;
 
-    @Autowired
+    @Autowired(required = false)
     StockDetailMapper stockDetailMapper;
 
-    @Autowired
+    @Autowired(required = false)
     DealMapper dealMapper;
 
     @Override

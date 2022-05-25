@@ -3,9 +3,12 @@ package coen275.stockmarket.Mapper;
 import coen275.stockmarket.data.DealPriceQuantity;
 import coen275.stockmarket.data.UserStocksInfo;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Mapper
+@Component("dealMapper")
 public interface DealMapper {
     @Insert({
             "insert into  dealprice (dealId, userId ,stockId,price, quantity, status)",
@@ -25,7 +28,12 @@ public interface DealMapper {
     void updateUserDealInfo(DealPriceQuantity dealPriceQuantity);
 
     @Select({
-            "select dealId, userId,  stockId, price, quantity, status from dealprice where dealId = #{dealId,jdbcType=BIGINT}"
+            "select dealId, userId,  stockId, price, quantity, status from dealprice where stockId = #{stockId,jdbcType=BIGINT}"
     })
     List<DealPriceQuantity> getStockTradeList(Long stockId);
+
+    @Select({
+            "select dealId, userId,  stockId, price, quantity, status from dealprice where stockId = #{stockId,jdbcType=BIGINT} && userId = #{stockId,jdbcType=BIGINT}"
+    })
+    List<DealPriceQuantity> getUserStockList(Long stockId, Long userId);
 }

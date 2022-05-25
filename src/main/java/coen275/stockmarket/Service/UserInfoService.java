@@ -4,5 +4,5 @@ import coen275.stockmarket.data.UserInfo;
 
 public interface UserInfoService {
 
-    UserInfo getUserInfoService();
+    UserInfo getUserInfoService(Long userId);
 }

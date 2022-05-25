@@ -2,13 +2,15 @@ package coen275.stockmarket.Mapper;
 
 import coen275.stockmarket.data.UserInfo;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
+@Component("userInfoMapper")
 public interface UserInfoMapper {
     @Update({
-
+            "update userInfo",
+            "set cash = #{cash, jdbcType=BIGINT} where userId = #{Id, jdbcType=BIGINT}"
     })
     int updateUserInfo(UserInfo userInfo);
 
@@ -27,4 +29,7 @@ public interface UserInfoMapper {
     //登录
     @Select("select u.id from user u where u.username = #{username} and password = #{password}")
     Long login(UserInfo user);
+
+    @Select("select Id , userName, password, cash, userStocksInfoList from userInfo where Id = #{userId,jdbcType=BIGINT}")
+    UserInfo getUserInfoService(Long userId);
 }

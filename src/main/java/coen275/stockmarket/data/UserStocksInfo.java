@@ -4,12 +4,14 @@ import coen275.stockmarket.Enum.StockStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
 public class UserStocksInfo {
     Long dealId;
     Long userId;
