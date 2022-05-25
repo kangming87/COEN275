@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="coen275.stockmarket.Mapper.UserBuyInfoMapper">
+  <resultMap id="BaseResultMap" type="coen275.stockmarket.data.UserBuyInfo">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="userId" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="stockId" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="stockCode" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="stockName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="buyprice" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, userId, stockId, stockCode, stockName, quantity, buyprice
+  </sql>
+  <select id="selectByExample" parameterType="coen275.stockmarket.data.UserBuyInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from user_buy_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insertSelective" parameterType="coen275.stockmarket.data.UserBuyInfo">
+    insert into user_buy_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="stockid != null">
+        stockId,
+      </if>
+      <if test="stockcode != null">
+        stockCode,
+      </if>
+      <if test="stockname != null">
+        stockName,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="buyprice != null">
+        buyprice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="stockid != null">
+        #{stockid,jdbcType=BIGINT},
+      </if>
+      <if test="stockcode != null">
+        #{stockcode,jdbcType=BIGINT},
+      </if>
+      <if test="stockname != null">
+        #{stockname,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="buyprice != null">
+        #{buyprice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="coen275.stockmarket.data.UserBuyInfo">
+    update user_buy_info
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="stockId != null">
+        stockId = #{stockId,jdbcType=BIGINT},
+      </if>
+      <if test="stockCode != null">
+        stockCode = #{stockCode,jdbcType=BIGINT},
+      </if>
+      <if test="stockName != null">
+        stockName = #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="buyPrice != null">
+        buyPrice = #{buyPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="coen275.stockmarket.data.UserBuyInfo">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="userId" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="stockId" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="stockCode" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="stockName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="buyPrice" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, userId, stockId, stockCode, stockName, quantity, buyprice
+  </sql>
+  <select id="selectByExample" parameterType="coen275.stockmarket.data.UserBuyInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from user_buy_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insertSelective" parameterType="coen275.stockmarket.data.UserBuyInfo">
+    insert into user_buy_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="stockId != null">
+        stockId,
+      </if>
+      <if test="stockCode != null">
+        stockCode,
+      </if>
+      <if test="stockName != null">
+        stockName,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="buyPrice != null">
+        buyPrice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="stockId != null">
+        #{stockId,jdbcType=BIGINT},
+      </if>
+      <if test="stockCode != null">
+        #{stockCode,jdbcType=BIGINT},
+      </if>
+      <if test="stockName != null">
+        #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="buyPrice != null">
+        #{buyPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="coen275.stockmarket.data.UserBuyInfo">
+    update user_buy_info
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="stockId != null">
+        stockId = #{stockId,jdbcType=BIGINT},
+      </if>
+      <if test="stockCode != null">
+        stockCode = #{stockCode,jdbcType=BIGINT},
+      </if>
+      <if test="stockName != null">
+        stockName = #{stockName,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="buyPrice != null">
+        buyPrice = #{buyPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
