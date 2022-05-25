@@ -17,11 +17,9 @@ public interface StockMapper {
     StockInfo getStockInfo(@Param("stockId") Long stockId);
 
 
-    @Select(value = "select * from stockinfo")
-    @Results({
-            @Result(property = "stockId",column = "stockId"),
-            @Result(property = "stockCode", column = "stockCode"),
-            @Result(property = "stockName", column = "stockName")
+
+    @Select({
+            "SELECT * FROM stockinfo"
     })
     List<StockInfo> getStockInfoList();
 }
