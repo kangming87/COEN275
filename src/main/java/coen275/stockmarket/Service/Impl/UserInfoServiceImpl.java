@@ -18,7 +18,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         LoginResult result = new LoginResult();
         result.setSuccess(false);
         try {
-            UserInfo existUser = userInfoMapper.findUserByName(user.getUserName());
+            UserInfo existUser = userInfoMapper.findUserByName(user.getUsername());
             if(existUser != null){
                 //如果用户名已存在
                 result.setMsg("Username is already used.");
@@ -45,7 +45,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             }else{
                 result.setMsg("Login Successfully");
                 result.setSuccess(true);
-                user.setId(userId);
+                user.setUserId(userId);
             }
         } catch(Exception e) {
             result.setMsg(e.getMessage());

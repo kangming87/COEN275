@@ -2,18 +2,16 @@ package coen275.stockmarket.Service.Impl;
 
 import coen275.stockmarket.Enum.StockStatusEnum;
 import coen275.stockmarket.Exception.CommonException;
-import coen275.stockmarket.Mapper.DealMapper;
-import coen275.stockmarket.Mapper.SaleMapper;
-import coen275.stockmarket.Mapper.StockMapper;
+import coen275.stockmarket.Mapper.DealPriceQuantityMapper;
+import coen275.stockmarket.Mapper.StockInfoMapper;
 import coen275.stockmarket.Mapper.UserInfoMapper;
+import coen275.stockmarket.Mapper.UserSaleInfoMapper;
 import coen275.stockmarket.Service.SaleService;
-import coen275.stockmarket.Service.StockService;
 import coen275.stockmarket.Service.UserInfoService;
 import coen275.stockmarket.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,22 +24,22 @@ public class SaleServiceImpl implements SaleService {
     UserInfoService userInfoService;
 
     @Autowired(required = false)
-    DealMapper dealMapper;
+    DealPriceQuantityMapper dealMapper;
 
     @Autowired(required = false)
-    SaleMapper saleMapper;
+    UserSaleInfoMapper saleMapper;
 
     @Autowired(required = false)
-    StockMapper stockMapper;
+    StockInfoMapper stockMapper;
 
     @Override
     public Boolean saleStock(UserSaleInfo userSaleInfo) {
         UserInfo userInfo = userInfoService.getUserInfoService(userSaleInfo.getUserId());
-        List<DealPriceQuantity> dealPriceQuantityList = dealMapper.getUserStockList(userSaleInfo.getStockId(), userInfo.getId());
+        List<DealPriceQuantity> dealPriceQuantityList = dealMapper.getUserStockList(userSaleInfo.getStockId(), userInfo.getUserId());
         List<UserStocksInfo> userStocksInfoList = new ArrayList<>();
-        StockInfo stockInfo = stockMapper.getStockInfo(userSaleInfo.getStockId());
+        StockInfo stockInfo = stockMapper.selectByPrimaryKey(userSaleInfo.getStockId());
         for(DealPriceQuantity dealPriceQuantity : dealPriceQuantityList){
-            userStocksInfoList.add(new UserStocksInfo(dealPriceQuantity.getDealId(), dealPriceQuantity.getUserId(), dealPriceQuantity.getStockId(),
+            userStocksInfoList.add(new UserStocksInfo(null, dealPriceQuantity.getDealId(), dealPriceQuantity.getUserId(), dealPriceQuantity.getStockId(),
                     stockInfo.getStockCode(), stockInfo.getStockName(), null, dealPriceQuantity.getQuantity(), dealPriceQuantity.getStatus(),
                     dealPriceQuantity.getPrice()));
         }

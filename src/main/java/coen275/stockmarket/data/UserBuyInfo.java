@@ -1,21 +1,27 @@
 package coen275.stockmarket.data;
 
-
-import coen275.stockmarket.Enum.StockStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Component
+@AllArgsConstructor
 public class UserBuyInfo {
-    Long userId;
-    Long stockId;
-    Long stockCode;
-    String stockName;
-    Long quantity;
-    Double buyPrice;
+    private Long id;
+
+    private Long userId;
+
+    private Long stockId;
+
+    private Long stockCode;
+
+    private String stockName;
+
+    private Integer quantity;
+
+    private Double buyPrice;
+
 }

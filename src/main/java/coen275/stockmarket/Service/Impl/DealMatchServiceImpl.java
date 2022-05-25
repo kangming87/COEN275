@@ -5,34 +5,33 @@ import coen275.stockmarket.Mapper.*;
 import coen275.stockmarket.Service.BuyService;
 import coen275.stockmarket.Service.DealMatchService;
 import coen275.stockmarket.data.DealPriceQuantity;
-import coen275.stockmarket.data.StockInfoDetail;
 import coen275.stockmarket.data.UserStocksInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+
 
 @Service
 public class DealMatchServiceImpl implements DealMatchService {
 
-    @Autowired(required = false)
-    SaleMapper saleMapper;
+    @Autowired
+    UserSaleInfoMapper saleMapper;
 
-    @Autowired(required = false)
-    BuyMapper buyMapper;
+    @Autowired
+    UserBuyInfoMapper buyMapper;
 
-    @Autowired(required = false)
-    StockMapper stockMapper;
+    @Autowired
+    StockInfoMapper stockInfoMapper;
 
-    @Autowired(required = false)
+    @Autowired
     BuyService buyService;
 
-    @Autowired(required = false)
-    DealMapper dealMapper;
+    @Autowired
+    DealPriceQuantityMapper dealMapper;
 
-    @Autowired(required = false)
-    StockDetailMapper stockDetailMapper;
+    @Autowired
+    StockInfoDetailMapper stockDetailMapper;
 
 
     Double minutePrice;
@@ -106,7 +105,7 @@ public class DealMatchServiceImpl implements DealMatchService {
 
             while(maxBuy.getQuantity() != 0 || minSale.getQuantity() != 0){
                 double eachPrice = 0.0;
-                long eachQuantity = 0L;
+                int eachQuantity = 0;
                 if(maxBuy.getQuantity() == 0){
                     if(buyPriorityQueue.size() != 0){
                         maxBuy = buyPriorityQueue.poll();
@@ -115,29 +114,29 @@ public class DealMatchServiceImpl implements DealMatchService {
                             eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                             eachQuantity = minSale.getQuantity() ;
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
+                                    null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuyPartSuccess));
+                                    null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuyPartSuccess));
                             maxBuy.setQuantity(maxBuy.getQuantity() - minSale.getQuantity()) ;
-                            minSale.setQuantity(0L);
+                            minSale.setQuantity(0);
 
                         }else if(maxBuy.getQuantity() < minSale.getQuantity()){
                             eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                             eachQuantity = maxBuy.getQuantity() ;
 
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
+                                    null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
+                                    null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
                             minSale.setQuantity(minSale.getQuantity() - maxBuy.getQuantity());
-                            maxBuy.setQuantity(0L);
+                            maxBuy.setQuantity(0);
                         }else{
                             eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                             eachQuantity = maxBuy.getQuantity() ;
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
+                                    null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
+                                    null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
                             break;
                         }
                     }else{
@@ -149,29 +148,29 @@ public class DealMatchServiceImpl implements DealMatchService {
                         if(maxBuy.getQuantity() > minSale.getQuantity()){
                             eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                             eachQuantity = minSale.getQuantity() ;
-                            dealPriceQuantitylist.add(new DealPriceQuantity(minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
+                            dealPriceQuantitylist.add(new DealPriceQuantity(null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuyPartSuccess));
+                                    null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuyPartSuccess));
                             maxBuy.setQuantity(maxBuy.getQuantity() - minSale.getQuantity()) ;
-                            minSale.setQuantity(0L);
+                            minSale.setQuantity(0);
 
                         }else if(maxBuy.getQuantity() < minSale.getQuantity()){
                             eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                             eachQuantity = maxBuy.getQuantity() ;
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
+                                    null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
+                                    null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
                             minSale.setQuantity(minSale.getQuantity() - maxBuy.getQuantity());
-                            maxBuy.setQuantity(0L);
+                            maxBuy.setQuantity(0);
 
                         }else{
                             eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                             eachQuantity = maxBuy.getQuantity() ;
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
+                                    null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
+                                    null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
                             break;
                         }
                     }else{
@@ -182,29 +181,29 @@ public class DealMatchServiceImpl implements DealMatchService {
                         eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                         eachQuantity = minSale.getQuantity() ;
                         dealPriceQuantitylist.add(new DealPriceQuantity(
-                                minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
+                                null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
                         dealPriceQuantitylist.add(new DealPriceQuantity(
-                                minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
+                                null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
                         maxBuy.setQuantity(maxBuy.getQuantity() - minSale.getQuantity()) ;
-                        minSale.setQuantity(0L);
+                        minSale.setQuantity(0);
 
                     }else if(maxBuy.getQuantity() < minSale.getQuantity()){
                         eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                         eachQuantity = maxBuy.getQuantity() ;
                         dealPriceQuantitylist.add(new DealPriceQuantity(
-                                minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
+                                null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
                         dealPriceQuantitylist.add(new DealPriceQuantity(
-                                minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
-                        Long newQuantity = minSale.getQuantity() - maxBuy.getQuantity();
-                        maxBuy.setQuantity(0L);
+                                null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
+                        int newQuantity = minSale.getQuantity() - maxBuy.getQuantity();
+                        maxBuy.setQuantity(0);
                         minSale.setQuantity(newQuantity);
                     }else{
                         eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                         eachQuantity = maxBuy.getQuantity() * 2;
                         dealPriceQuantitylist.add(new DealPriceQuantity(
-                                minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
+                                null,minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
                         dealPriceQuantitylist.add(new DealPriceQuantity(
-                                minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
+                                null, minSale.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
                         break;
                     }
                 }

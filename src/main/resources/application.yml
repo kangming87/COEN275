@@ -1,8 +1,14 @@
+
+mybatis:
+  type-aliases-package: coen275.stockmarket.data
+  mapper-locations: classpath:mybatis-mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
 server:
   port: 8080
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/login?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://localhost:3306/stockmarket?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
-    password: lsc115500
+    password: 1234

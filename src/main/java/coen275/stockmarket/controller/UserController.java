@@ -1,7 +1,6 @@
 package coen275.stockmarket.controller;
 
 import coen275.stockmarket.Service.Impl.UserInfoServiceImpl;
-import coen275.stockmarket.Service.UserInfoService;
 import coen275.stockmarket.data.UserInfo;
 import coen275.stockmarket.utils.LoginResult;
 import org.springframework.beans.factory.annotation.Autowired;
