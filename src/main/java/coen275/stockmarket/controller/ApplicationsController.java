@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class ApplicationsController extends BaseController{
+public class ApplicationsController {
 
     @Autowired
     BuyService buyService;
@@ -33,10 +33,6 @@ public class ApplicationsController extends BaseController{
     @PostMapping("/buyStock")
     public SuccessResponse buyStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId,
                                   @PathVariable("quantity") Long quantity, @PathVariable("buyPrice") Double buyPrice) {
-        long uid = getUserId();
-        if (uid < 0) {
-            throw new CommonException("登录状态已失效，请重新登录！", "user_login_status_error", 407);
-        }
         StockInfo stockInfo = stockService.getStockInfo(stockId);
         UserBuyInfo userBuyInfo = new UserBuyInfo(userId, stockId ,stockInfo.getStockCode(), stockInfo.getStockName(), quantity, buyPrice);
         if(!buyService.buyStock(userBuyInfo)){
@@ -48,10 +44,6 @@ public class ApplicationsController extends BaseController{
     @PostMapping("/saleStock")
     public SuccessResponse saleStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId,
                                     @PathVariable("quantity") Long quantity, @PathVariable("salePrice") Double salePrice) {
-        long uid = getUserId();
-        if (uid < 0) {
-            throw new CommonException("登录状态已失效，请重新登录！", "user_login_status_error", 407);
-        }
         StockInfo stockInfo = stockService.getStockInfo(stockId);
         UserSaleInfo userSaleInfo = new UserSaleInfo(userId, stockId ,stockInfo.getStockCode(), stockInfo.getStockName(), quantity, salePrice);
         saleService.saleStock(userSaleInfo);
