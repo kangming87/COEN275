@@ -9,13 +9,17 @@ import coen275.stockmarket.Service.BuyService;
 import coen275.stockmarket.Service.UserInfoService;
 import coen275.stockmarket.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Component
 public class BuyServiceImpl implements BuyService {
+
 
     @Autowired
     UserInfoMapper userInfoMapper;

@@ -5,9 +5,10 @@ import coen275.stockmarket.Service.UserInfoService;
 import coen275.stockmarket.data.UserInfo;
 import coen275.stockmarket.utils.LoginResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class UserInfoServiceImpl implements UserInfoService {
     @Autowired(required = false)
     UserInfoMapper userInfoMapper;
@@ -23,7 +24,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 //如果用户名已存在
                 result.setMsg("Username is already used.");
             }else{
-                userInfoMapper.regist(user);
+                userInfoMapper.regist(user.getUsername(), user.getPassword());
                 result.setMsg("Register Success");
                 result.setSuccess(true);
             }
@@ -39,7 +40,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         LoginResult result = new LoginResult();
         result.setSuccess(false);
         try{
-            Long userId = userInfoMapper.login(user);
+            Long userId = userInfoMapper.login(user.getUsername(), user.getPassword());
             if(userId == null){
                 result.setMsg("Username or password wrong");
             }else{

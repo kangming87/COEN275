@@ -7,12 +7,13 @@ import coen275.stockmarket.Service.DealMatchService;
 import coen275.stockmarket.data.DealPriceQuantity;
 import coen275.stockmarket.data.UserStocksInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 
-@Service
+@Component
 public class DealMatchServiceImpl implements DealMatchService {
 
     @Autowired

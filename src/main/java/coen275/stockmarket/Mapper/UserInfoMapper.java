@@ -3,16 +3,20 @@ package coen275.stockmarket.Mapper;
 import coen275.stockmarket.data.UserInfo;
 import coen275.stockmarket.data.UserInfoExample;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 
 @Mapper
 @Component("userInfoMapper")
-public interface UserInfoMapper {
+public interface UserInfoMapper{
+
     @Delete({
         "delete from user_info",
         "where userId = #{userId,jdbcType=BIGINT}"
@@ -58,21 +62,18 @@ public interface UserInfoMapper {
     int updateUserInfo(UserInfo userInfo);
 
     @Select(value = "select u.username,u.password from user_info u where u.username=#{username}")
-    @Results
-            ({@Result(property = "username",column = "username"),
-                    @Result(property = "password",column = "password")})
     UserInfo findUserByName(@Param("username") String username);
 
     //注册
     @Insert("insert into user_info values(#{userId},#{username},#{password})")
     //加入该注解可以保存对象后，查看对象插入id
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
-    void regist(UserInfo user);
+    void regist(String username, String password);
 
     //登录
-    @Select("select u.id from user u where u.username = #{username} and password = #{password}")
-    Long login(UserInfo user);
+    @Select("select u.userId from user_info u where u.username = #{username} and password = #{password}")
+    Long login(String username, String password);
 
-    @Select("select Id , userName, password, cash, userStocksInfoList from user_info where Id = #{userId,jdbcType=BIGINT}")
-    UserInfo getUserInfoService(Long userId);
+    @Select("select userId , username, password, cash from user_info where userId = #{userId,jdbcType=BIGINT}")
+    UserInfo getUserInfoService(@Param("userId") Long userId);
 }

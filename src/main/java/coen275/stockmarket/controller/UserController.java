@@ -1,15 +1,15 @@
 package coen275.stockmarket.controller;
 
 import coen275.stockmarket.Service.Impl.UserInfoServiceImpl;
+import coen275.stockmarket.data.StockInfo;
 import coen275.stockmarket.data.UserInfo;
 import coen275.stockmarket.utils.LoginResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserInfoServiceImpl userService;
@@ -26,4 +26,9 @@ public class UserController {
         return userService.login(user);
     }
 
+    @GetMapping(value = "/getProfile")
+    public UserInfo getUserInfo(@PathVariable("userId") Long userId){
+        return userService.getUserInfoService(userId);
+
+    }
 }

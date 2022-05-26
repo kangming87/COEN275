@@ -9,11 +9,12 @@ import coen275.stockmarket.data.StockInfo;
 import coen275.stockmarket.data.StockInfoDetail;
 import coen275.stockmarket.data.StockInfoExample;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Component
 public class StockServiceImpl implements StockService {
     @Autowired
     StockInfoMapper stockInfoMapper;
