@@ -30,7 +30,9 @@ public interface UserBuyInfoMapper {
         "#{stockName,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, ",
         "#{buyPrice,jdbcType=DECIMAL})"
     })
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insert(UserBuyInfo record);
+
 
     int insertSelective(UserBuyInfo record);
 

@@ -33,38 +33,80 @@ public class SaleServiceImpl implements SaleService {
     @Autowired(required = false)
     StockInfoMapper stockMapper;
 
+    @Autowired
+    UserSaleInfoMapper userSaleInfoMapper;
+
     @Override
     public Boolean saleStock(UserSaleInfo userSaleInfo) {
-        UserInfo userInfo = userInfoService.getUserInfoService(userSaleInfo.getUserId());
-        List<DealPriceQuantity> dealPriceQuantityList = dealMapper.getUserStockList(userSaleInfo.getStockId(), userInfo.getUserId());
+        List<DealPriceQuantity> dealPriceQuantityList = dealMapper.getUserStockList(userSaleInfo.getUserId(), userSaleInfo.getStockId());
+        System.out.println(dealPriceQuantityList);
         List<UserStocksInfo> userStocksInfoList = new ArrayList<>();
         StockInfo stockInfo = stockMapper.selectByPrimaryKey(userSaleInfo.getStockId());
         for(DealPriceQuantity dealPriceQuantity : dealPriceQuantityList){
-            userStocksInfoList.add(new UserStocksInfo(null, dealPriceQuantity.getDealId(), dealPriceQuantity.getUserId(), dealPriceQuantity.getStockId(),
+            userStocksInfoList.add(new UserStocksInfo(dealPriceQuantity.getId(), dealPriceQuantity.getDealId(), dealPriceQuantity.getUserId(), dealPriceQuantity.getStockId(),
                     stockInfo.getStockCode(), stockInfo.getStockName(), null, dealPriceQuantity.getQuantity(), dealPriceQuantity.getStatus(),
                     dealPriceQuantity.getPrice()));
         }
+
         boolean flag = true;
+        long sum = 0L;
         for (UserStocksInfo userStocksInfo : userStocksInfoList) {
             if (userStocksInfo.getStockId().equals(userSaleInfo.getStockId())) {
                 if (userStocksInfo.getQuantity() >= userSaleInfo.getQuantity() && (userStocksInfo.getStatus()
                         == StockStatusEnum.BuySuccess || userStocksInfo.getStatus() == StockStatusEnum.BuyPartSuccess)) {
-                    userStocksInfo.setQuantity(userStocksInfo.getQuantity() - userSaleInfo.getQuantity());
-                    userStocksInfo.setStatus(StockStatusEnum.Sale);
-
-                    userInfoMapper.updateUserInfo(userInfo); //更改用户金钱信息
-                    int res = dealMapper.insertDealInfo(userStocksInfo); //插入交易记录
-                    saleMapper.insertUserSale(userSaleInfo); //插入委托卖的价格
+                    sum += userStocksInfo.getQuantity();
                     flag = false;
-                    return true;
-                } else {
-                    throw new CommonException("当前用户没有足够的数量这个股票", "NoEnoughQuantity", 409);
                 }
             }
         }
         if(flag){
             throw new CommonException("当前用户没有这个股票", "NoSuchStock", 409);
         }
+        if(sum < userSaleInfo.getQuantity()){
+            throw new CommonException("当前用户没有这个股票或没有这个数量股票", "NoSuchStock", 409);
+        }
+        userSaleInfoMapper.insert(userSaleInfo);
+        Long dealId = userSaleInfo.getId();
+
+
+        UserStocksInfo userStocksInfo = new UserStocksInfo();
+        userStocksInfo.setDealId(dealId);
+        userStocksInfo.setUserId(userSaleInfo.getUserId());
+        userStocksInfo.setStockId(userSaleInfo.getStockId());
+        userStocksInfo.setStockCode(userSaleInfo.getStockCode());
+        userStocksInfo.setStockName(userSaleInfo.getStockName());
+        userStocksInfo.setQuantity(userSaleInfo.getQuantity());
+        userStocksInfo.setStatus(StockStatusEnum.Sale);
+        userStocksInfo.setPrice(userSaleInfo.getSalePrice());
+
+        dealMapper.insertDealInfo(userStocksInfo);
+//        while(sum != 0){
+//            for (UserStocksInfo userStocksInfo : userStocksInfoList) {
+//                if (userStocksInfo.getStockId().equals(userSaleInfo.getStockId())) {
+//                    if (userStocksInfo.getQuantity() >= userSaleInfo.getQuantity() && (userStocksInfo.getStatus()
+//                            == StockStatusEnum.BuySuccess || userStocksInfo.getStatus() == StockStatusEnum.BuyPartSuccess)) {
+//
+//                        if(userStocksInfo.getQuantity() >= userSaleInfo.getQuantity()){
+//                            userStocksInfo.setQuantity(userStocksInfo.getQuantity() - userSaleInfo.getQuantity());
+//                            userStocksInfo.setStatus(StockStatusEnum.BuySuccess);
+//                            userStocksInfo.setDealId(dealId);
+//                            sum = 0;
+//                        }else if(userStocksInfo.getQuantity() < userSaleInfo.getQuantity()){
+//                            userSaleInfo.setQuantity(userSaleInfo.getQuantity() - userStocksInfo.getQuantity());
+//                            userStocksInfo.setQuantity(0);
+//                            userStocksInfo.setStatus(StockStatusEnum.BuySuccess);
+//                            userStocksInfo.setDealId(dealId);
+//                        }
+//
+//
+//                        int res = dealMapper.insertDealInfo(userStocksInfo); //插入交易记录
+//                        flag = false;
+//                    }
+//                }
+//            }
+//            return true;
+//        }
+
         return false;
     }
 }

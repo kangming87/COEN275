@@ -27,7 +27,7 @@ public class UserStocksInfo {
 
     private Integer quantity;
 
-    private StockStatusEnum status;
+    private Enum status;
 
     private Double price;
 

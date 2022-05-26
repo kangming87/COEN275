@@ -1,5 +1,6 @@
 package coen275.stockmarket.Mapper;
 
+import coen275.stockmarket.Enum.StockStatusEnum;
 import coen275.stockmarket.data.DealPriceQuantity;
 import coen275.stockmarket.data.DealPriceQuantityExample;
 import java.util.List;
@@ -60,7 +61,7 @@ public interface DealPriceQuantityMapper {
     @Insert({
             "insert into  deal_price_quantity (dealId, userId ,stockId,price, quantity, status)",
             "values (#{dealId, jdbcType=BIGINT}, #{userId, jdbcType=BIGINT}, #{stockId, jdbcType=BIGINT}, ",
-            "#{price, jdbcType=DOUBLE}, #{quantity, jdbcType=BIGINT}, #{status, jdbcType=TINYINT})"
+            "#{price, jdbcType=DOUBLE}, #{quantity, jdbcType=BIGINT}, #{status, jdbcType= CHAR})"
     })
     int insertDealInfo(UserStocksInfo userStocksInfo);
 
@@ -70,7 +71,7 @@ public interface DealPriceQuantityMapper {
             "stockId = #{stockId, jdbcType=BIGINT},",
             "price = #{price, jdbcType=DOUBLE},",
             "quantity = #{quantity, jdbcType=BIGINT},",
-            "status = #{status, jdbcType=TINYINT} where dealId = #{dealId, jdbcType=BIGINT}"
+            "status = #{status, jdbcType=CHAR} where dealId = #{dealId, jdbcType=BIGINT}"
     })
     void updateUserDealInfo(DealPriceQuantity dealPriceQuantity);
 
@@ -80,7 +81,13 @@ public interface DealPriceQuantityMapper {
     List<DealPriceQuantity> getStockTradeList(Long stockId);
 
     @Select({
-            "select dealId, userId,  stockId, price, quantity, status from deal_price_quantity where stockId = #{stockId,jdbcType=BIGINT} && userId = #{stockId,jdbcType=BIGINT}"
+            "select * from deal_price_quantity where userId = #{userId,jdbcType=BIGINT} && stockId = #{stockId,jdbcType=BIGINT} "
     })
-    List<DealPriceQuantity> getUserStockList(Long stockId, Long userId);
+    List<DealPriceQuantity> getUserStockList( Long userId, Long stockId);
+
+    @Select({
+            "select * from deal_price_quantity where status = #{status, jdbcType=CHAR} "
+    })
+    List<DealPriceQuantity> getUserStockInfoListByStatus(StockStatusEnum status);
+
 }

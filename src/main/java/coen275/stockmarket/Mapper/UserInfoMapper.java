@@ -57,7 +57,7 @@ public interface UserInfoMapper{
 
     @Update({
             "update user_info",
-            "set cash = #{cash, jdbcType=BIGINT} where userId = #{Id, jdbcType=BIGINT}"
+            "set cash = #{cash, jdbcType=BIGINT} where userId = #{userId, jdbcType=BIGINT}"
     })
     int updateUserInfo(UserInfo userInfo);
 

@@ -30,6 +30,7 @@ public interface UserSaleInfoMapper {
         "#{stockName,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, ",
         "#{salePrice,jdbcType=DECIMAL})"
     })
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insert(UserSaleInfo record);
 
     int insertSelective(UserSaleInfo record);
@@ -62,18 +63,14 @@ public interface UserSaleInfoMapper {
 
 
     @Select({
-
+            "select * from user_sale_info "
     })
-    List<UserStocksInfo> getUserSaleStockInfo(); //选择status为3代表买未成交
-
+    List<UserStocksInfo> getUserSaleStockInfo();
 
     @Update({
 
     })
     void updateUserSaleStockInfo(DealPriceQuantity dealPriceQuantity);
 
-    @Insert({
 
-    })
-    void insertUserSale(UserSaleInfo userSaleInfo);
 }

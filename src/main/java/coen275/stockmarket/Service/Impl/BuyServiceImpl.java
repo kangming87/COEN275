@@ -36,29 +36,35 @@ public class BuyServiceImpl implements BuyService {
     @Autowired
     StockInfoMapper stockInfoMapper;
 
+    @Autowired
+    UserBuyInfoMapper userBuyInfoMapper;
+
     @Override
     public Boolean buyStock(UserBuyInfo userBuyInfo) {
         UserInfo userInfo = userInfoService.getUserInfoService(userBuyInfo.getUserId());
         if(userInfo.getCash() >= userBuyInfo.getBuyPrice() * userBuyInfo.getQuantity()){
             userInfo.setCash(userInfo.getCash() - userBuyInfo.getBuyPrice() * userBuyInfo.getQuantity());
-            List<DealPriceQuantity> dealPriceQuantityList = dealMapper.getUserStockList(userBuyInfo.getStockId(), userInfo.getUserId());
+//           List<DealPriceQuantity> dealPriceQuantityList = dealMapper.getUserStockList(userBuyInfo.getStockId(), userInfo.getUserId());
             List<UserStocksInfo> userStocksInfoList = new ArrayList<>();
-            StockInfo stockInfo = stockInfoMapper.selectByPrimaryKey(userBuyInfo.getStockId());
-            for(DealPriceQuantity dealPriceQuantity : dealPriceQuantityList){
-                UserStocksInfo userStocksInfo = new UserStocksInfo();
-                userStocksInfo.setDealId(dealPriceQuantity.getDealId());
-                userStocksInfo.setUserId(dealPriceQuantity.getUserId());
-                userStocksInfo.setStockId(dealPriceQuantity.getStockId());
-                userStocksInfo.setStockCode(stockInfo.getStockCode());
-                userStocksInfo.setStockName(stockInfo.getStockName());
-                userStocksInfo.setQuantity(dealPriceQuantity.getQuantity());
-                userStocksInfo.setStatus(dealPriceQuantity.getStatus());
-                userStocksInfo.setPrice(dealPriceQuantity.getPrice());
-                userStocksInfoList.add(userStocksInfo);
-            }
+            userBuyInfoMapper.insert(userBuyInfo);
+            Long dealId = userBuyInfo.getId();
+            System.out.println(dealId);
+//            StockInfo stockInfo = stockInfoMapper.selectByPrimaryKey(userBuyInfo.getStockId());
+//            for(DealPriceQuantity dealPriceQuantity : dealPriceQuantityList){
+//                UserStocksInfo userStocksInfo = new UserStocksInfo();
+//                userStocksInfo.setDealId(dealId);
+//                userStocksInfo.setUserId(dealPriceQuantity.getUserId());
+//                userStocksInfo.setStockId(dealPriceQuantity.getStockId());
+//                userStocksInfo.setStockCode(stockInfo.getStockCode());
+//                userStocksInfo.setStockName(stockInfo.getStockName());
+//                userStocksInfo.setQuantity(dealPriceQuantity.getQuantity());
+//                userStocksInfo.setStatus(dealPriceQuantity.getStatus());
+//                userStocksInfo.setPrice(dealPriceQuantity.getPrice());
+//                userStocksInfoList.add(userStocksInfo);
+//            }
 
             UserStocksInfo userStocksInfo = new UserStocksInfo();
-            userStocksInfo.setDealId(userBuyInfo.getId());
+            userStocksInfo.setDealId(dealId);
             userStocksInfo.setUserId(userBuyInfo.getUserId());
             userStocksInfo.setStockId(userBuyInfo.getStockId());
             userStocksInfo.setStockCode(userBuyInfo.getStockCode());
@@ -67,12 +73,13 @@ public class BuyServiceImpl implements BuyService {
             userStocksInfo.setStatus(StockStatusEnum.Buy);
             userStocksInfo.setPrice(userBuyInfo.getBuyPrice());
 
+            System.out.println(userStocksInfo);
+
 
             userStocksInfoList.add(userStocksInfo);
 
             userInfoMapper.updateUserInfo(userInfo); //更改用户金钱信息
             int res = dealMapper.insertDealInfo(userStocksInfo); //插入交易记录
-            buyMapper.insertUserBuy(userBuyInfo); //插入委托买的价格
             return true;
         }else{
             return false;

@@ -14,7 +14,6 @@ public class DealSchedule
 
     //@Scheduled(cron = "*/2 * * * * ?")
     public void updateGoodsStatus() {
-
         Boolean matchSuccess = dealMatchService.updateDealQueue();
         log.info("完成队列交易的更新");
         if(matchSuccess){

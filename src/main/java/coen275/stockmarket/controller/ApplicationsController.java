@@ -1,10 +1,7 @@
 package coen275.stockmarket.controller;
 
 import coen275.stockmarket.Exception.CommonException;
-import coen275.stockmarket.Service.BuyService;
-import coen275.stockmarket.Service.SaleService;
-import coen275.stockmarket.Service.StockService;
-import coen275.stockmarket.Service.UserInfoService;
+import coen275.stockmarket.Service.*;
 import coen275.stockmarket.data.*;
 import coen275.stockmarket.utils.SuccessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,9 @@ public class ApplicationsController {
 
     @Autowired
     SaleService saleService;
+
+    @Autowired
+    DealMatchService dealMatchService;
 
 
     @PostMapping("/buyStock/{userId}/{stockId}/{quantity}/{buyPrice}")
@@ -79,5 +79,12 @@ public class ApplicationsController {
         return stockService.getStockTradeList(stockId);
     }
 
+
+    @GetMapping("/dealMatch")
+    public SuccessResponse dealMatch(){
+        dealMatchService.updateDealQueue();
+        return new SuccessResponse(200,"success","提交成功!");
+
+    }
 
 }

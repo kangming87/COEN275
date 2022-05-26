@@ -58,8 +58,8 @@ public interface StockInfoDetailMapper {
     int updateByPrimaryKey(StockInfoDetail record);
 
 
-    @Update(value = "update stock_info_detail set curr_price=#{curr_price}, max_price=#{max_price}, min_price=#{min_price}, where stockId=#{stockId}")
-    void updateStockInfo(Long stockId, Double curr_price, Double max_price, Double min_price);
+    @Update(value = "update stock_info_detail set curr_price=#{currPrice}, max_price=#{maxPrice}, min_price=#{minPrice} where stockId=#{stockId}")
+    void updateStockInfo(Long stockId, Double currPrice, Double maxPrice, Double minPrice);
 
     @Select({
             "select",
