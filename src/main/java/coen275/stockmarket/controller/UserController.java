@@ -26,7 +26,7 @@ public class UserController {
         return userService.login(user);
     }
 
-    @GetMapping(value = "/getProfile")
+    @GetMapping(value = "/getProfile/{userId}")
     public UserInfo getUserInfo(@PathVariable("userId") Long userId){
         return userService.getUserInfoService(userId);
 

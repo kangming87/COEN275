@@ -31,7 +31,7 @@ public class ApplicationsController {
     SaleService saleService;
 
 
-    @PostMapping("/buyStock/{userId}/{stockId}/{quantity}/{salePrice}")
+    @PostMapping("/buyStock/{userId}/{stockId}/{quantity}/{buyPrice}")
     public SuccessResponse buyStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId,
                                   @PathVariable("quantity") Integer quantity, @PathVariable("buyPrice") Double buyPrice) {
         StockInfo stockInfo = stockService.getStockInfo(stockId);
@@ -71,8 +71,6 @@ public class ApplicationsController {
 
     @GetMapping("/getStockDetail/{stockId}")
     public StockInfoDetail getStockInfoDetail(@PathVariable("stockId") Long stockId){
-        System.out.println("1111111111111111111");
-        System.out.println(stockId);
         return stockService.getStockDetailInfo(stockId);
     }
 
