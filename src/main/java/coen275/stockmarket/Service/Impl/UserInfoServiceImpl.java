@@ -48,6 +48,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             }else{
                 result.setResult("Success");
                 result.setSuccess(true);
+                result.setUserId(userId);
             }
         } catch(Exception e) {
             result.setResult(e.getMessage());
