@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 @Component("userInfoMapper")
 public interface UserInfoMapper{
 
+
     @Delete({
         "delete from user_info",
         "where userId = #{userId,jdbcType=BIGINT}"
@@ -65,10 +66,13 @@ public interface UserInfoMapper{
     UserInfo findUserByName(@Param("username") String username);
 
     //注册
-    @Insert("insert into user_info values(#{userId},#{username},#{password})")
+    @Insert({
+            "insert into user_info (username, password)",
+            "values (#{username,jdbcType=VARCHAR}, ",
+            "#{password,jdbcType=VARCHAR})"
+    })
     //加入该注解可以保存对象后，查看对象插入id
-    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
-    void regist(String username, String password);
+    void register(String username, String password);
 
     //登录
     @Select("select u.userId from user_info u where u.username = #{username} and password = #{password}")

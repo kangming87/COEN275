@@ -2,6 +2,7 @@ package coen275.stockmarket.controller;
 
 import coen275.stockmarket.Exception.CommonException;
 import coen275.stockmarket.Service.BuyService;
+import coen275.stockmarket.Service.Impl.UserInfoServiceImpl;
 import coen275.stockmarket.Service.SaleService;
 import coen275.stockmarket.Service.StockService;
 import coen275.stockmarket.Service.UserInfoService;
@@ -30,6 +31,8 @@ public class ApplicationsController {
     @Autowired
     SaleService saleService;
 
+    @Autowired
+    private UserInfoServiceImpl userService;
 
     @PostMapping("/buyStock/{userId}/{stockId}/{quantity}/{buyPrice}")
     public SuccessResponse buyStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId,
@@ -78,6 +81,5 @@ public class ApplicationsController {
     public List<DealPriceQuantity> getStockTradeList(@PathVariable("stockId") Long stockId){
         return stockService.getStockTradeList(stockId);
     }
-
 
 }
