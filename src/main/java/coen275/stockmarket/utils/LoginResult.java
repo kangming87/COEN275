@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class LoginResult {
 
     //返回信息
-    private String msg;
+    private String result;
 
     //数据是否正常请求
     private boolean success;

@@ -15,15 +15,15 @@ public class UserController {
     private UserInfoServiceImpl userService;
 
     //注册
-    @PostMapping(value = "/regist")
-    public LoginResult regist(UserInfo user){
-        return userService.regist(user);
+    @PostMapping(value = "/register/{username}/{password}")
+    public LoginResult register(@PathVariable("username")String username, @PathVariable("password")String password){
+        return userService.register(username, password);
     }
 
     //登录
-    @PostMapping(value = "/login")
-    public LoginResult login(UserInfo user){
-        return userService.login(user);
+    @PostMapping(value = "/login/{username}/{password}")
+    public LoginResult login(@PathVariable("username")String username, @PathVariable("password")String password){
+        return userService.login(username, password);
     }
 
     @GetMapping(value = "/getProfile/{userId}")

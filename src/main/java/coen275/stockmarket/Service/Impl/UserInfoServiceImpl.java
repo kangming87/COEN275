@@ -10,46 +10,47 @@ import org.springframework.stereotype.Service;
 
 @Component
 public class UserInfoServiceImpl implements UserInfoService {
-    @Autowired(required = false)
+    @Autowired
     UserInfoMapper userInfoMapper;
 
 
     //注册
-    public LoginResult regist(UserInfo user){
+    public LoginResult register(String username, String password){
         LoginResult result = new LoginResult();
         result.setSuccess(false);
         try {
-            UserInfo existUser = userInfoMapper.findUserByName(user.getUsername());
+            UserInfo existUser = userInfoMapper.findUserByName(username);
             if(existUser != null){
                 //如果用户名已存在
-                result.setMsg("Username is already used.");
+                result.setResult("Username is already used.");
             }else{
-                userInfoMapper.regist(user.getUsername(), user.getPassword());
-                result.setMsg("Register Success");
+                userInfoMapper.register(username, password);
+                result.setResult("Success");
                 result.setSuccess(true);
             }
         } catch (Exception e) {
-            result.setMsg(e.getMessage());
+            result.setResult(e.getMessage());
             e.printStackTrace();
         }
         return result;
     }
 
     //登录
-    public LoginResult login(UserInfo user){
+    public LoginResult login(String username, String password){
+        //UserInfo user = userInfoMapper.findUserByName(username);
+
         LoginResult result = new LoginResult();
         result.setSuccess(false);
         try{
-            Long userId = userInfoMapper.login(user.getUsername(), user.getPassword());
+            Long userId = userInfoMapper.login(username, password);
             if(userId == null){
-                result.setMsg("Username or password wrong");
+                result.setResult("Username or password wrong");
             }else{
-                result.setMsg("Login Successfully");
+                result.setResult("Success");
                 result.setSuccess(true);
-                user.setUserId(userId);
             }
         } catch(Exception e) {
-            result.setMsg(e.getMessage());
+            result.setResult(e.getMessage());
             e.printStackTrace();
         }
         return result;
