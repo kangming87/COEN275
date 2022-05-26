@@ -31,7 +31,7 @@ public class ApplicationsController {
     SaleService saleService;
 
 
-    @PostMapping("/buyStock")
+    @PostMapping("/buyStock/{userId}/{stockId}/{quantity}/{salePrice}")
     public SuccessResponse buyStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId,
                                   @PathVariable("quantity") Integer quantity, @PathVariable("buyPrice") Double buyPrice) {
         StockInfo stockInfo = stockService.getStockInfo(stockId);
@@ -48,7 +48,7 @@ public class ApplicationsController {
         return new SuccessResponse(200,"success","提交成功!");
     }
 
-    @PostMapping("/saleStock")
+    @PostMapping("/saleStock/{userId}/{stockId}/{quantity}/{salePrice}")
     public SuccessResponse saleStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId,
                                     @PathVariable("quantity") Integer quantity, @PathVariable("salePrice") Double salePrice) {
         StockInfo stockInfo = stockService.getStockInfo(stockId);
@@ -69,12 +69,14 @@ public class ApplicationsController {
 
     }
 
-    @GetMapping("/getStockDetail")
+    @GetMapping("/getStockDetail/{stockId}")
     public StockInfoDetail getStockInfoDetail(@PathVariable("stockId") Long stockId){
+        System.out.println("1111111111111111111");
+        System.out.println(stockId);
         return stockService.getStockDetailInfo(stockId);
     }
 
-    @GetMapping("/getStockTradeList")
+    @GetMapping("/getStockTradeList/{stockId}")
     public List<DealPriceQuantity> getStockTradeList(@PathVariable("stockId") Long stockId){
         return stockService.getStockTradeList(stockId);
     }

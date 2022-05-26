@@ -11,4 +11,4 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/stockmarket?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: lsc115500
+    password: 1234
