@@ -59,8 +59,8 @@ public interface DealPriceQuantityMapper {
 
 
     @Insert({
-            "insert into  deal_price_quantity (userId ,stockId,price, quantity, status)",
-            "values (#{userId, jdbcType=BIGINT}, #{stockId, jdbcType=BIGINT}, ",
+            "insert into  deal_price_quantity (dealId, userId ,stockId,price, quantity, status)",
+            "values (#{dealId, jdbcType=BIGINT}, #{userId, jdbcType=BIGINT}, #{stockId, jdbcType=BIGINT}, ",
             "#{price, jdbcType=DOUBLE}, #{quantity, jdbcType=BIGINT}, #{status, jdbcType= CHAR})"
     })
     int insertDealInfo(UserStocksInfo userStocksInfo);

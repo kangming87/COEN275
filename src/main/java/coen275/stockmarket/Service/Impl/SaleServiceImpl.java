@@ -66,11 +66,11 @@ public class SaleServiceImpl implements SaleService {
             throw new CommonException("当前用户没有这个股票或没有这个数量股票", "NoSuchStock", 409);
         }
         userSaleInfoMapper.insert(userSaleInfo);
-        //Long dealId = userSaleInfo.getId();
+        Long dealId = userSaleInfo.getId();
 
 
         UserStocksInfo userStocksInfo = new UserStocksInfo();
-        //userStocksInfo.setDealId(dealId);
+        userStocksInfo.setDealId(dealId);
         userStocksInfo.setUserId(userSaleInfo.getUserId());
         userStocksInfo.setStockId(userSaleInfo.getStockId());
         userStocksInfo.setStockCode(userSaleInfo.getStockCode());

@@ -48,7 +48,7 @@ public class BuyServiceImpl implements BuyService {
 //           List<DealPriceQuantity> dealPriceQuantityList = dealMapper.getUserStockList(userBuyInfo.getStockId(), userInfo.getUserId());
             List<UserStocksInfo> userStocksInfoList = new ArrayList<>();
             userBuyInfoMapper.insert(userBuyInfo);
-            //Long dealId = userBuyInfo.getId();
+            Long dealId = userBuyInfo.getId();
             //.out.println(dealId);
 //            StockInfo stockInfo = stockInfoMapper.selectByPrimaryKey(userBuyInfo.getStockId());
 //            for(DealPriceQuantity dealPriceQuantity : dealPriceQuantityList){
@@ -65,7 +65,7 @@ public class BuyServiceImpl implements BuyService {
 //            }
 
             UserStocksInfo userStocksInfo = new UserStocksInfo();
-            //userStocksInfo.setDealId(dealId);
+            userStocksInfo.setDealId(dealId);
             userStocksInfo.setUserId(userBuyInfo.getUserId());
             userStocksInfo.setStockId(userBuyInfo.getStockId());
             userStocksInfo.setStockCode(userBuyInfo.getStockCode());
