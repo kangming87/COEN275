@@ -19,13 +19,12 @@ public interface UserStocksInfoMapper {
     int deleteByPrimaryKey(Long id);
 
     @Insert({
-        "insert into user_stocks_info (id, dealId, ",
+        "insert into user_stocks_info (id, ",
         "userId, stockId, stockCode, ",
-        "stockName, time, ",
+        "stockName,",
         "quantity, status, price)",
-        "values (#{id,jdbcType=BIGINT}, #{dealId,jdbcType=BIGINT}, ",
-        "#{userId,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{stockCode,jdbcType=BIGINT}, ",
-        "#{stockName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, ",
+        "values (#{id,jdbcType=BIGINT}, #{#{userId,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{stockCode,jdbcType=BIGINT}, ",
+        "#{stockName,jdbcType=VARCHAR},",
         "#{quantity,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{price,jdbcType=DECIMAL})"
     })
     int insert(UserStocksInfo record);

@@ -42,6 +42,7 @@ public class BuyServiceImpl implements BuyService {
     @Override
     public Boolean buyStock(UserBuyInfo userBuyInfo) {
         UserInfo userInfo = userInfoService.getUserInfoService(userBuyInfo.getUserId());
+
         if(userInfo.getCash() >= userBuyInfo.getBuyPrice() * userBuyInfo.getQuantity()){
             userInfo.setCash(userInfo.getCash() - userBuyInfo.getBuyPrice() * userBuyInfo.getQuantity());
 //           List<DealPriceQuantity> dealPriceQuantityList = dealMapper.getUserStockList(userBuyInfo.getStockId(), userInfo.getUserId());

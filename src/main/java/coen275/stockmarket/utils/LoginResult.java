@@ -15,6 +15,7 @@ public class LoginResult {
     //数据是否正常请求
     private boolean success;
 
+    private long userId;
 
 
 
