@@ -1,11 +1,9 @@
 package coen275.stockmarket.Mapper;
 
-import coen275.stockmarket.data.DealPriceQuantity;
-import coen275.stockmarket.data.UserSaleInfo;
-import coen275.stockmarket.data.UserSaleInfoExample;
+import coen275.stockmarket.data.*;
+
 import java.util.List;
 
-import coen275.stockmarket.data.UserStocksInfo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -67,10 +65,11 @@ public interface UserSaleInfoMapper {
     })
     List<UserStocksInfo> getUserSaleStockInfo();
 
-    @Update({
 
+
+    @Select({
+            "select quantity from user_sale_info where id = #{id,jdbcType=BIGINT}"
     })
-    void updateUserSaleStockInfo(DealPriceQuantity dealPriceQuantity);
-
+    int selectByKey(Long id);
 
 }

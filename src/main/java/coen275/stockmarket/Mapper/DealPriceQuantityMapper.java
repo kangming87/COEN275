@@ -76,7 +76,8 @@ public interface DealPriceQuantityMapper {
     void updateUserDealInfo(DealPriceQuantity dealPriceQuantity);
 
     @Select({
-            "select dealId, userId,  stockId, price, quantity, status from deal_price_quantity where stockId = #{stockId,jdbcType=BIGINT}"
+            "SELECT * FROM deal_price_quantity where stockId = #{stockId,jdbcType=BIGINT} && STATUS = 'BuySuccess' || STATUS = 'BuyPartSuccess'\n" +
+                    "|| STATUS ='SaleSuccess'|| STATUS = 'SalePartSuccess'"
     })
     List<DealPriceQuantity> getStockTradeList(Long stockId);
 
@@ -86,8 +87,13 @@ public interface DealPriceQuantityMapper {
     List<DealPriceQuantity> getUserStockList( Long userId, Long stockId);
 
     @Select({
-            "select * from deal_price_quantity where status = #{status, jdbcType=CHAR} "
+            "select * from deal_price_quantity where status = #{status1, jdbcType=CHAR} || status = #{status2, jdbcType=CHAR}"
     })
-    List<DealPriceQuantity> getUserStockInfoListByStatus(StockStatusEnum status);
+    List<DealPriceQuantity> getUserStockInfoListByStatus(StockStatusEnum status1, StockStatusEnum status2);
+
+    @Select({
+            "select * from deal_price_quantity where userId = #{userId, jdbcType=CHAR} "
+    })
+    List<DealPriceQuantity> getUserTradeList(Long userId);
 
 }

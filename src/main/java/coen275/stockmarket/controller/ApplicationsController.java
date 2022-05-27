@@ -79,6 +79,11 @@ public class ApplicationsController {
         return stockService.getStockTradeList(stockId);
     }
 
+    @GetMapping("/getUserTradeList/{userId}")
+    public List<DealPriceQuantity> getUserTradeList(@PathVariable("userId") Long userId){
+        return stockService.getUserTradeList(userId);
+    }
+
 
     @GetMapping("/dealMatch")
     public SuccessResponse dealMatch(){

@@ -1,13 +1,9 @@
 package coen275.stockmarket.Service.Impl;
 
-import coen275.stockmarket.Mapper.DealPriceQuantityMapper;
-import coen275.stockmarket.Mapper.StockInfoDetailMapper;
-import coen275.stockmarket.Mapper.StockInfoMapper;
+import coen275.stockmarket.Enum.StockStatusEnum;
+import coen275.stockmarket.Mapper.*;
 import coen275.stockmarket.Service.StockService;
-import coen275.stockmarket.data.DealPriceQuantity;
-import coen275.stockmarket.data.StockInfo;
-import coen275.stockmarket.data.StockInfoDetail;
-import coen275.stockmarket.data.StockInfoExample;
+import coen275.stockmarket.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -24,6 +20,12 @@ public class StockServiceImpl implements StockService {
 
     @Autowired
     DealPriceQuantityMapper dealMapper;
+
+    @Autowired
+    UserBuyInfoMapper userBuyInfoMapper;
+
+    @Autowired
+    UserSaleInfoMapper userSaleInfoMapper;
 
     @Override
     public StockInfo getStockInfo(Long stockId) {
@@ -45,5 +47,22 @@ public class StockServiceImpl implements StockService {
     @Override
     public List<DealPriceQuantity> getStockTradeList(Long stockId) {
         return dealMapper.getStockTradeList(stockId);
+    }
+
+    @Override
+    public List<DealPriceQuantity> getUserTradeList(Long userId) {
+        List<DealPriceQuantity> dealPriceQuantityList =  dealMapper.getUserTradeList(userId);
+        for(DealPriceQuantity dealPriceQuantity : dealPriceQuantityList){
+            if(dealPriceQuantity.getStatus() == StockStatusEnum.BuyPartSuccess){
+                long id = dealPriceQuantity.getDealId();
+                int buyQuantity = userBuyInfoMapper.selectByKey(id);
+                dealPriceQuantity.setQuantity(buyQuantity - dealPriceQuantity.getQuantity());
+            }else if(dealPriceQuantity.getStatus() == StockStatusEnum.SalePartSuccess){
+                long id = dealPriceQuantity.getDealId();
+                int saleQuantity = userSaleInfoMapper.selectByKey(id);
+                dealPriceQuantity.setQuantity(saleQuantity - dealPriceQuantity.getQuantity());
+            }
+        }
+        return dealPriceQuantityList;
     }
 }

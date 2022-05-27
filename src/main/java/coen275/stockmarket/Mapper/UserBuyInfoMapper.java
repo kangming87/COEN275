@@ -78,4 +78,11 @@ public interface UserBuyInfoMapper {
             "#{stockName, jdbcType=VARCHAR}, #{quantity, jdbcType=BIGINT}, #{buyPrice, jdbcType=DOUBLE})"
     })
     void insertUserBuy(UserBuyInfo userBuyInfo);
+
+
+    @Select({
+            "select quantity from user_buy_info where id = #{id,jdbcType=BIGINT}"
+    })
+    int selectByKey(Long id);
+
 }

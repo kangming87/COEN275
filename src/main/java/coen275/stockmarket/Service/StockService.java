@@ -17,4 +17,6 @@ public interface StockService {
     StockInfoDetail getStockDetailInfo(Long stockId);
 
     List<DealPriceQuantity> getStockTradeList(Long stockId);
+
+    List<DealPriceQuantity> getUserTradeList(Long userId);
 }
