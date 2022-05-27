@@ -4,6 +4,7 @@ import coen275.stockmarket.Mapper.UserInfoMapper;
 import coen275.stockmarket.Service.UserInfoService;
 import coen275.stockmarket.data.UserInfo;
 import coen275.stockmarket.utils.LoginResult;
+import coen275.stockmarket.utils.SuccessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 result.setResult("Username is already used.");
             }else{
                 userInfoMapper.register(username, password);
+                Long userId = userInfoMapper.login(username, password);
                 result.setResult("Success");
                 result.setSuccess(true);
+                result.setUserId(userId);
             }
         } catch (Exception e) {
             result.setResult(e.getMessage());
@@ -57,6 +60,22 @@ public class UserInfoServiceImpl implements UserInfoService {
         return result;
     }
 
+    //充值
+    public SuccessResponse add_cash(Long userId, Double cash){
+        SuccessResponse result = new SuccessResponse();
+        result.setCode("Success");
+        result.setMessage("Cash added");
+        result.setStatus(200);
+        try{
+            UserInfo existUser = userInfoMapper.getUserInfoService(userId);
+            existUser.setCash(existUser.getCash() + cash);
+            userInfoMapper.updateUserInfo(existUser);
+        }catch(Exception e){
+            result.setMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
     @Override
     public UserInfo getUserInfoService(Long userId) {
         return userInfoMapper.getUserInfoService(userId);
