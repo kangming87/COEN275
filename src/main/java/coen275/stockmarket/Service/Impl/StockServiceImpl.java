@@ -4,6 +4,7 @@ import coen275.stockmarket.Enum.StockStatusEnum;
 import coen275.stockmarket.Mapper.*;
 import coen275.stockmarket.Service.StockService;
 import coen275.stockmarket.data.*;
+import coen275.stockmarket.utils.stock_and_profit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,12 @@ public class StockServiceImpl implements StockService {
     public List<StockInfo> getStockInfoList() {
         StockInfoExample stockInfoExample = new StockInfoExample();
         return stockInfoMapper.selectByExample(stockInfoExample);
+    }
+
+    @Override
+    public List<stock_and_profit> getSuggestionStocks() {
+
+        return stockInfoMapper.selectforSuggestion();
     }
 
     @Override

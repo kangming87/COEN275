@@ -16,15 +16,15 @@ import org.springframework.stereotype.Repository;
 public interface DealPriceQuantityMapper {
     @Delete({
         "delete from deal_price_quantity",
-        "where id = #{id,jdbcType=BIGINT}"
+        "where dealId = #{dealId,jdbcType=BIGINT}"
     })
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long dealId);
 
     @Insert({
-        "insert into deal_price_quantity (id, dealId, ",
+        "insert into deal_price_quantity (",
         "userId, stockId, price, ",
         "quantity, status)",
-        "values (#{id,jdbcType=BIGINT}, #{dealId,jdbcType=BIGINT}, ",
+        "values",
         "#{userId,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, ",
         "#{quantity,jdbcType=INTEGER}, #{status,jdbcType=CHAR})"
     })
@@ -36,18 +36,18 @@ public interface DealPriceQuantityMapper {
 
     @Select({
         "select",
-        "id, dealId, userId, stockId, price, quantity, status",
+        "dealId, userId, stockId, price, quantity, status",
         "from deal_price_quantity",
-        "where id = #{id,jdbcType=BIGINT}"
+        "where dealId = #{dealId,jdbcType=BIGINT}"
     })
     @ResultMap("BaseResultMap")
-    DealPriceQuantity selectByPrimaryKey(Long id);
+    DealPriceQuantity selectByPrimaryKey(Long dealId);
 
     int updateByPrimaryKeySelective(DealPriceQuantity record);
 
     @Update({
         "update deal_price_quantity",
-        "set dealId = #{dealId,jdbcType=BIGINT},",
+        "set",
           "userId = #{userId,jdbcType=BIGINT},",
           "stockId = #{stockId,jdbcType=BIGINT},",
           "price = #{price,jdbcType=DECIMAL},",
@@ -59,8 +59,8 @@ public interface DealPriceQuantityMapper {
 
 
     @Insert({
-            "insert into  deal_price_quantity (dealId, userId ,stockId,price, quantity, status)",
-            "values (#{dealId, jdbcType=BIGINT}, #{userId, jdbcType=BIGINT}, #{stockId, jdbcType=BIGINT}, ",
+            "insert into  deal_price_quantity (userId ,stockId,price, quantity, status)",
+            "values (#{userId, jdbcType=BIGINT}, #{stockId, jdbcType=BIGINT}, ",
             "#{price, jdbcType=DOUBLE}, #{quantity, jdbcType=BIGINT}, #{status, jdbcType= CHAR})"
     })
     int insertDealInfo(UserStocksInfo userStocksInfo);

@@ -4,6 +4,7 @@ import coen275.stockmarket.data.StockInfo;
 import coen275.stockmarket.data.StockInfoExample;
 import java.util.List;
 
+import coen275.stockmarket.utils.stock_and_profit;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,11 @@ public interface StockInfoMapper {
     List<StockInfo> selectByExample(StockInfoExample example);
 
     @Select({
+            "SELECT *, ((curr_price-start_price)/start_price) AS profit FROM `stock_info_detail`  ORDER BY (curr_price - start_price) DESC;"
+    })
+    List<stock_and_profit> selectforSuggestion();
+
+    @Select({
         "select",
         "stockId, stockCode, stockName",
         "from stock_info",
@@ -48,4 +54,6 @@ public interface StockInfoMapper {
         "where stockId = #{stockId,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(StockInfo record);
+
+
 }
