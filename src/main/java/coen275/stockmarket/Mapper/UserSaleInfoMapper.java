@@ -13,20 +13,20 @@ import org.springframework.stereotype.Repository;
 @Component("userSaleInfoMapper")
 public interface UserSaleInfoMapper {
     @Delete({
-        "delete from user_sale_info",
-        "where id = #{id,jdbcType=BIGINT}"
+            "delete from user_sale_info",
+            "where id = #{id,jdbcType=BIGINT}"
     })
     int deleteByPrimaryKey(Long id);
 
     @Insert({
-        "insert into user_sale_info (id, userId, ",
-        "stockId, stockCode, ",
-        "stockName, quantity, ",
-        "salePrice)",
-        "values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, ",
-        "#{stockId,jdbcType=BIGINT}, #{stockCode,jdbcType=BIGINT}, ",
-        "#{stockName,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, ",
-        "#{salePrice,jdbcType=DECIMAL})"
+            "insert into user_sale_info (id, userId, ",
+            "stockId, stockCode, ",
+            "stockName, quantity, ",
+            "salePrice)",
+            "values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, ",
+            "#{stockId,jdbcType=BIGINT}, #{stockCode,jdbcType=BIGINT}, ",
+            "#{stockName,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, ",
+            "#{salePrice,jdbcType=DECIMAL})"
     })
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insert(UserSaleInfo record);
@@ -36,10 +36,10 @@ public interface UserSaleInfoMapper {
     List<UserSaleInfo> selectByExample(UserSaleInfoExample example);
 
     @Select({
-        "select",
-        "id, userId, stockId, stockCode, stockName, quantity, salePrice",
-        "from user_sale_info",
-        "where id = #{id,jdbcType=BIGINT}"
+            "select",
+            "id, userId, stockId, stockCode, stockName, quantity, salePrice",
+            "from user_sale_info",
+            "where id = #{id,jdbcType=BIGINT}"
     })
     @ResultMap("BaseResultMap")
     UserSaleInfo selectByPrimaryKey(Long id);
@@ -47,14 +47,14 @@ public interface UserSaleInfoMapper {
     int updateByPrimaryKeySelective(UserSaleInfo record);
 
     @Update({
-        "update user_sale_info",
-        "set userId = #{userId,jdbcType=BIGINT},",
-          "stockId = #{stockId,jdbcType=BIGINT},",
-          "stockCode = #{stockCode,jdbcType=BIGINT},",
-          "stockName = #{stockName,jdbcType=VARCHAR},",
-          "quantity = #{quantity,jdbcType=INTEGER},",
-          "salePrice = #{salePrice,jdbcType=DECIMAL}",
-        "where id = #{id,jdbcType=BIGINT}"
+            "update user_sale_info",
+            "set userId = #{userId,jdbcType=BIGINT},",
+            "stockId = #{stockId,jdbcType=BIGINT},",
+            "stockCode = #{stockCode,jdbcType=BIGINT},",
+            "stockName = #{stockName,jdbcType=VARCHAR},",
+            "quantity = #{quantity,jdbcType=INTEGER},",
+            "salePrice = #{salePrice,jdbcType=DECIMAL}",
+            "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(UserSaleInfo record);
 
