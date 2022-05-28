@@ -4,6 +4,7 @@ import coen275.stockmarket.data.StockInfo;
 import coen275.stockmarket.data.StockInfoExample;
 import java.util.List;
 
+import coen275.stockmarket.utils.stock_and_profit;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
