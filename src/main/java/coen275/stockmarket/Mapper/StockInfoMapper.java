@@ -48,4 +48,9 @@ public interface StockInfoMapper {
         "where stockId = #{stockId,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(StockInfo record);
+
+    @Select({
+            "SELECT stockId FROM stock_info"
+    })
+    List<Long> selectStockNumber();
 }

@@ -87,9 +87,10 @@ public interface DealPriceQuantityMapper {
     List<DealPriceQuantity> getUserStockList( Long userId, Long stockId);
 
     @Select({
-            "select * from deal_price_quantity where status = #{status1, jdbcType=CHAR} || status = #{status2, jdbcType=CHAR}"
+            "select * from deal_price_quantity where (status = #{status1, jdbcType=CHAR} || status = #{status2, jdbcType=CHAR}) " +
+                    "&& stockId = #{stockId,jdbcType=BIGINT}"
     })
-    List<DealPriceQuantity> getUserStockInfoListByStatus(StockStatusEnum status1, StockStatusEnum status2);
+    List<DealPriceQuantity> getUserStockInfoListByStatus(StockStatusEnum status1, StockStatusEnum status2, Long stockId);
 
     @Select({
             "select * from deal_price_quantity where userId = #{userId, jdbcType=CHAR} "

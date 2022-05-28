@@ -65,4 +65,9 @@ public class StockServiceImpl implements StockService {
         }
         return dealPriceQuantityList;
     }
+
+    @Override
+    public List<Long> selectStockNumber() {
+        return stockInfoMapper.selectStockNumber();
+    }
 }

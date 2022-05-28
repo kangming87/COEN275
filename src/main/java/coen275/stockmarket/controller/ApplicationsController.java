@@ -85,9 +85,9 @@ public class ApplicationsController {
     }
 
 
-    @GetMapping("/dealMatch")
-    public SuccessResponse dealMatch(){
-        dealMatchService.updateDealQueue();
+    @GetMapping("/dealMatch/{stockId}")
+    public SuccessResponse dealMatch(@PathVariable("stockId") Long stockId){
+        dealMatchService.updateDealQueue(stockId);
         return new SuccessResponse(200,"success","提交成功!");
 
     }

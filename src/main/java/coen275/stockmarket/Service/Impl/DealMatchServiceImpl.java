@@ -7,6 +7,7 @@ import coen275.stockmarket.Service.DealMatchService;
 import coen275.stockmarket.data.DealPriceQuantity;
 import coen275.stockmarket.data.UserStocksInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class DealMatchServiceImpl implements DealMatchService {
 
 
     @Override
-    public Boolean updateDealQueue() {
+    public Boolean updateDealQueue(Long stockId) {
         PriorityQueue<DealPriceQuantity> salePriorityQueue = new PriorityQueue<DealPriceQuantity>(new Comparator<DealPriceQuantity>() {
             @Override
             public int compare(DealPriceQuantity o1, DealPriceQuantity o2) {
@@ -72,9 +73,9 @@ public class DealMatchServiceImpl implements DealMatchService {
         });
 
 
-        List<DealPriceQuantity> saleList = dealMapper.getUserStockInfoListByStatus(StockStatusEnum.Sale, StockStatusEnum.SalePartSuccess);
+        List<DealPriceQuantity> saleList = dealMapper.getUserStockInfoListByStatus(StockStatusEnum.Sale, StockStatusEnum.SalePartSuccess, stockId);
 
-        List<DealPriceQuantity> buyList = dealMapper.getUserStockInfoListByStatus(StockStatusEnum.Buy, StockStatusEnum.BuyPartSuccess);
+        List<DealPriceQuantity> buyList = dealMapper.getUserStockInfoListByStatus(StockStatusEnum.Buy, StockStatusEnum.BuyPartSuccess, stockId);
 
         Map<Long, DealPriceQuantity> userBuyInfoMap = new HashMap<>();
 
@@ -285,7 +286,7 @@ public class DealMatchServiceImpl implements DealMatchService {
                         }
                     }else{
                         eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
-                        eachQuantity = maxBuy.getQuantity() * 2;
+                        eachQuantity = maxBuy.getQuantity();
                         dealPriceQuantitylist.add(new DealPriceQuantity(
                                 null,minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
                         dealPriceQuantitylist.add(new DealPriceQuantity(
@@ -392,6 +393,9 @@ public class DealMatchServiceImpl implements DealMatchService {
         for(Long userId : userSaleInfoMap.keySet()){
             dealMapper.updateUserDealInfo(userSaleInfoMap.get(userId));
         }
+
+        String tName=Thread.currentThread().getName();
+        System.out.println(stockId+"调用的线程名字："+tName);
 
         return true;
     }

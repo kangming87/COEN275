@@ -4,5 +4,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface DealMatchService {
-    Boolean updateDealQueue();
+    Boolean updateDealQueue(Long stockId);
 }

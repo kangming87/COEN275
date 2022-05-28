@@ -8,10 +8,14 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class} )
 @MapperScan("coen275.stockmarket.Mapper")
+@EnableScheduling
+@EnableAsync
 public class StockmarketApplication extends SpringBootServletInitializer {
 
     @Override protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
