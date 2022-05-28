@@ -31,6 +31,11 @@ public interface StockInfoMapper {
     List<StockInfo> selectByExample(StockInfoExample example);
 
     @Select({
+            "SELECT *, ((curr_price-start_price)/start_price) AS profit FROM `stock_info_detail`  ORDER BY (curr_price - start_price) DESC;"
+    })
+    List<stock_and_profit> selectforSuggestion();
+
+    @Select({
         "select",
         "stockId, stockCode, stockName",
         "from stock_info",

@@ -4,6 +4,7 @@ import coen275.stockmarket.Exception.CommonException;
 import coen275.stockmarket.Service.*;
 import coen275.stockmarket.data.*;
 import coen275.stockmarket.utils.SuccessResponse;
+import coen275.stockmarket.utils.stock_and_profit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
@@ -89,7 +90,11 @@ public class ApplicationsController {
     public SuccessResponse dealMatch(@PathVariable("stockId") Long stockId){
         dealMatchService.updateDealQueue(stockId);
         return new SuccessResponse(200,"success","提交成功!");
-
     }
 
+    @GetMapping("/getSuggestionStocks")
+    public List<stock_and_profit> getSuggestionStocks(){
+        return stockService.getSuggestionStocks();
+
+    }
 }
