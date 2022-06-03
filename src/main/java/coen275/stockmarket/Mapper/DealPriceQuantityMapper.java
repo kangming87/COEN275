@@ -15,18 +15,18 @@ import org.springframework.stereotype.Repository;
 @Component("dealPriceQuantityMapper")
 public interface DealPriceQuantityMapper {
     @Delete({
-        "delete from deal_price_quantity",
-        "where dealId = #{dealId,jdbcType=BIGINT}"
+            "delete from deal_price_quantity",
+            "where dealId = #{dealId,jdbcType=BIGINT}"
     })
     int deleteByPrimaryKey(Long dealId);
 
     @Insert({
-        "insert into deal_price_quantity (",
-        "userId, stockId, price, ",
-        "quantity, status)",
-        "values",
-        "#{userId,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, ",
-        "#{quantity,jdbcType=INTEGER}, #{status,jdbcType=CHAR})"
+            "insert into deal_price_quantity (",
+            "userId, stockId, price, ",
+            "quantity, status)",
+            "values",
+            "#{userId,jdbcType=BIGINT}, #{stockId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, ",
+            "#{quantity,jdbcType=INTEGER}, #{status,jdbcType=CHAR})"
     })
     int insert(DealPriceQuantity record);
 
@@ -35,10 +35,10 @@ public interface DealPriceQuantityMapper {
     List<DealPriceQuantity> selectByExample(DealPriceQuantityExample example);
 
     @Select({
-        "select",
-        "dealId, userId, stockId, price, quantity, status",
-        "from deal_price_quantity",
-        "where dealId = #{dealId,jdbcType=BIGINT}"
+            "select",
+            "dealId, userId, stockId, price, quantity, status",
+            "from deal_price_quantity",
+            "where dealId = #{dealId,jdbcType=BIGINT}"
     })
     @ResultMap("BaseResultMap")
     DealPriceQuantity selectByPrimaryKey(Long dealId);
@@ -46,14 +46,14 @@ public interface DealPriceQuantityMapper {
     int updateByPrimaryKeySelective(DealPriceQuantity record);
 
     @Update({
-        "update deal_price_quantity",
-        "set",
-          "userId = #{userId,jdbcType=BIGINT},",
-          "stockId = #{stockId,jdbcType=BIGINT},",
-          "price = #{price,jdbcType=DECIMAL},",
-          "quantity = #{quantity,jdbcType=INTEGER},",
-          "status = #{status,jdbcType=CHAR}",
-        "where id = #{id,jdbcType=BIGINT}"
+            "update deal_price_quantity",
+            "set",
+            "userId = #{userId,jdbcType=BIGINT},",
+            "stockId = #{stockId,jdbcType=BIGINT},",
+            "price = #{price,jdbcType=DECIMAL},",
+            "quantity = #{quantity,jdbcType=INTEGER},",
+            "status = #{status,jdbcType=CHAR}",
+            "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(DealPriceQuantity record);
 
