@@ -435,10 +435,11 @@ public class DealMatchServiceImpl implements DealMatchService {
                 dealPriceQuantity.setStatus(StockStatusEnum.SaleSuccess);
                 dealPriceQuantity.setDealId(-1L);
                 dealMapper.insertSelective(dealPriceQuantity);
-                int quantity = userSaleInfoMapper.selectByKey(dealPriceQuantity.getDealId());
-                userInfoMapper.updateUserInfoCash(dealPriceQuantity.getPrice()
-                        * userSaleInfoMap.get(userId).getQuantity(), userId);
-                userSaleInfoMap.get(userId).setQuantity(quantity - userBuyInfoMap.get(userId).getQuantity());
+                int quantity = userSaleInfoMapper.selectByKey(userSaleInfoMap.get(userId).getDealId());
+                Double cash = dealPriceQuantity.getPrice() * userSaleInfoMap.get(userId).getQuantity();
+                userInfoMapper.updateUserInfoCash(cash, userId);
+                int newQuantity = quantity - userSaleInfoMap.get(userId).getQuantity();
+                userSaleInfoMap.get(userId).setQuantity(newQuantity);
             }
             dealMapper.updateUserDealInfo(userSaleInfoMap.get(userId));
         }
