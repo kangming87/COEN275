@@ -5,6 +5,7 @@ import coen275.stockmarket.Mapper.*;
 import coen275.stockmarket.Service.BuyService;
 import coen275.stockmarket.Service.DealMatchService;
 import coen275.stockmarket.data.DealPriceQuantity;
+import coen275.stockmarket.data.UserBuyInfo;
 import coen275.stockmarket.data.UserStocksInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -41,6 +42,9 @@ public class DealMatchServiceImpl implements DealMatchService {
 
     @Autowired
     UserSaleInfoMapper userSaleInfoMapper;
+
+    @Autowired
+    UserBuyInfoMapper userBuyInfoMapper;
 
 
     Double minutePrice;
@@ -145,6 +149,8 @@ public class DealMatchServiceImpl implements DealMatchService {
                                     null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
                                     null, maxBuy.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
+
+
                             minSale.setQuantity(minSale.getQuantity() - maxBuy.getQuantity());
                             maxBuy.setQuantity(0);
                             if(maxPrice == 0.0){
@@ -189,7 +195,7 @@ public class DealMatchServiceImpl implements DealMatchService {
                             eachQuantity = minSale.getQuantity() ;
                             dealPriceQuantitylist.add(new DealPriceQuantity(null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SaleSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    null, maxBuy.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuyPartSuccess));
+                                    null, maxBuy.getDealId(), maxBuy.getUserId(), stockId, eachPrice, maxBuy.getQuantity() - minSale.getQuantity(), StockStatusEnum.BuyPartSuccess));
                             maxBuy.setQuantity(maxBuy.getQuantity() - minSale.getQuantity()) ;
                             minSale.setQuantity(0);
                             if(maxPrice == 0.0){
@@ -208,7 +214,7 @@ public class DealMatchServiceImpl implements DealMatchService {
                             eachPrice = (maxBuy.getPrice() + minSale.getPrice()) / 2;
                             eachQuantity = maxBuy.getQuantity() ;
                             dealPriceQuantitylist.add(new DealPriceQuantity(
-                                    null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.SalePartSuccess));
+                                    null, minSale.getDealId(), minSale.getUserId(), stockId, eachPrice, minSale.getQuantity() - maxBuy.getQuantity(), StockStatusEnum.SalePartSuccess));
                             dealPriceQuantitylist.add(new DealPriceQuantity(
                                     null, maxBuy.getDealId(), maxBuy.getUserId(), stockId, eachPrice, eachQuantity, StockStatusEnum.BuySuccess));
                             minSale.setQuantity(minSale.getQuantity() - maxBuy.getQuantity());
@@ -334,7 +340,8 @@ public class DealMatchServiceImpl implements DealMatchService {
                     || dealPriceQuantity.getStatus() == StockStatusEnum.BuySuccess){
                 if(userBuyInfoMap.containsKey(dealPriceQuantity.getUserId())){
                     if((userBuyInfoMap.get(dealPriceQuantity.getUserId()).getStatus() ==StockStatusEnum.BuyPartSuccess
-                            && dealPriceQuantity.getStatus() == StockStatusEnum.BuySuccess) || (userBuyInfoMap.get(dealPriceQuantity.getUserId()).getStatus() ==StockStatusEnum.BuySuccess
+                            && dealPriceQuantity.getStatus() == StockStatusEnum.BuySuccess) ||
+                            (userBuyInfoMap.get(dealPriceQuantity.getUserId()).getStatus() ==StockStatusEnum.BuySuccess
                             && dealPriceQuantity.getStatus() == StockStatusEnum.BuyPartSuccess)){
                         DealPriceQuantity dealBuyPriceQuantity = userBuyInfoMap.get(dealPriceQuantity.getUserId());
                         dealBuyPriceQuantity.setStatus(StockStatusEnum.BuySuccess);
@@ -394,19 +401,46 @@ public class DealMatchServiceImpl implements DealMatchService {
         }
 
         for(Long userId : userBuyInfoMap.keySet()){
+            if(userBuyInfoMap.get(userId).getStatus() == StockStatusEnum.BuyPartSuccess){
+                DealPriceQuantity dealPriceQuantity = new DealPriceQuantity();
+                dealPriceQuantity.setStatus(StockStatusEnum.BuySuccess);
+                dealPriceQuantity.setDealId(-1L);
+                dealPriceQuantity.setPrice(userBuyInfoMap.get(userId).getPrice());
+                dealPriceQuantity.setQuantity(userBuyInfoMap.get(userId).getQuantity());
+                dealPriceQuantity.setId(userBuyInfoMap.get(userId).getId());
+                dealPriceQuantity.setUserId(userBuyInfoMap.get(userId).getUserId());
+                dealPriceQuantity.setStockId(userBuyInfoMap.get(userId).getStockId());
+                dealMapper.insertSelective(dealPriceQuantity);
+                long dealId = userBuyInfoMap.get(userId).getDealId();
+                UserBuyInfo userBuyInfo =  userBuyInfoMapper.selectByDealId(dealId);
+                int quantity = userBuyInfo.getQuantity();
+                Double buyPrice = userBuyInfo.getBuyPrice();
+                userBuyInfoMap.get(userId).setQuantity(quantity - userBuyInfoMap.get(userId).getQuantity());
+                userBuyInfoMap.get(userId).setPrice(buyPrice);
+            }
             dealMapper.updateUserDealInfo(userBuyInfoMap.get(userId));
         }
 
         for(Long userId : userSaleInfoMap.keySet()){
-            dealMapper.updateUserDealInfo(userSaleInfoMap.get(userId));
             if(userSaleInfoMap.get(userId).getStatus() == StockStatusEnum.SaleSuccess){
                 userInfoMapper.updateUserInfoCash(userSaleInfoMap.get(userId).getPrice()
                         * userSaleInfoMap.get(userId).getQuantity(), userId);
             }else if(userSaleInfoMap.get(userId).getStatus() == StockStatusEnum.SalePartSuccess){
-                int quantity = userSaleInfoMapper.selectByKey(userSaleInfoMap.get(userId).getDealId());
-                userInfoMapper.updateUserInfoCash(userSaleInfoMap.get(userId).getPrice()
-                        * (quantity - userSaleInfoMap.get(userId).getQuantity()), userId);
+                DealPriceQuantity dealPriceQuantity = new DealPriceQuantity();
+                dealPriceQuantity.setPrice(userSaleInfoMap.get(userId).getPrice());
+                dealPriceQuantity.setQuantity(userSaleInfoMap.get(userId).getQuantity());
+                dealPriceQuantity.setId(userSaleInfoMap.get(userId).getId());
+                dealPriceQuantity.setUserId(userSaleInfoMap.get(userId).getUserId());
+                dealPriceQuantity.setStockId(userSaleInfoMap.get(userId).getStockId());
+                dealPriceQuantity.setStatus(StockStatusEnum.SaleSuccess);
+                dealPriceQuantity.setDealId(-1L);
+                dealMapper.insertSelective(dealPriceQuantity);
+                int quantity = userSaleInfoMapper.selectByKey(dealPriceQuantity.getDealId());
+                userInfoMapper.updateUserInfoCash(dealPriceQuantity.getPrice()
+                        * userSaleInfoMap.get(userId).getQuantity(), userId);
+                userSaleInfoMap.get(userId).setQuantity(quantity - userBuyInfoMap.get(userId).getQuantity());
             }
+            dealMapper.updateUserDealInfo(userSaleInfoMap.get(userId));
         }
 
         String tName=Thread.currentThread().getName();

@@ -59,17 +59,17 @@ public class StockServiceImpl implements StockService {
     @Override
     public List<DealPriceQuantity> getUserTradeList(Long userId) {
         List<DealPriceQuantity> dealPriceQuantityList =  dealMapper.getUserTradeList(userId);
-        for(DealPriceQuantity dealPriceQuantity : dealPriceQuantityList){
-            if(dealPriceQuantity.getStatus() == StockStatusEnum.BuyPartSuccess){
-                long id = dealPriceQuantity.getDealId();
-                int buyQuantity = userBuyInfoMapper.selectByKey(id);
-                dealPriceQuantity.setQuantity(buyQuantity - dealPriceQuantity.getQuantity());
-            }else if(dealPriceQuantity.getStatus() == StockStatusEnum.SalePartSuccess){
-                long id = dealPriceQuantity.getDealId();
-                int saleQuantity = userSaleInfoMapper.selectByKey(id);
-                dealPriceQuantity.setQuantity(saleQuantity - dealPriceQuantity.getQuantity());
-            }
-        }
+//        for(DealPriceQuantity dealPriceQuantity : dealPriceQuantityList){
+//            if(dealPriceQuantity.getStatus() == StockStatusEnum.BuyPartSuccess){
+//                long id = dealPriceQuantity.getDealId();
+//                int buyQuantity = userBuyInfoMapper.selectByKey(id);
+//                dealPriceQuantity.setQuantity(buyQuantity - dealPriceQuantity.getQuantity());
+//            }else if(dealPriceQuantity.getStatus() == StockStatusEnum.SalePartSuccess){
+//                long id = dealPriceQuantity.getDealId();
+//                int saleQuantity = userSaleInfoMapper.selectByKey(id);
+//                dealPriceQuantity.setQuantity(saleQuantity - dealPriceQuantity.getQuantity());
+//            }
+//        }
         return dealPriceQuantityList;
     }
 

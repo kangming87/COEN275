@@ -85,4 +85,12 @@ public interface UserBuyInfoMapper {
     })
     int selectByKey(Long id);
 
+    @Select({
+            "select",
+            "id, userId, stockId, stockCode, stockName, quantity, buyPrice",
+            "from user_buy_info",
+            "where id = #{id,jdbcType=BIGINT}"
+    })
+    UserBuyInfo selectByDealId(Long id);
+
 }
