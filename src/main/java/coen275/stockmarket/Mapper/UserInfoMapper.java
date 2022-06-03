@@ -80,4 +80,10 @@ public interface UserInfoMapper{
 
     @Select("select userId , username, password, cash from user_info where userId = #{userId,jdbcType=BIGINT}")
     UserInfo getUserInfoService(@Param("userId") Long userId);
+
+    @Update({
+            "UPDATE user_info SET cash = cash + #{cash,jdbcType=DOUBLE} WHERE userId = #{userId,jdbcType=BIGINT}"
+    })
+    void updateUserInfoCash(@Param("cash") Double cash, @Param("userId") Long userId);
+
 }

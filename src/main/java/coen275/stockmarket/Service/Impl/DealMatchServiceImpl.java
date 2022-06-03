@@ -36,6 +36,13 @@ public class DealMatchServiceImpl implements DealMatchService {
     StockInfoDetailMapper stockDetailMapper;
 
 
+    @Autowired
+    UserInfoMapper userInfoMapper;
+
+    @Autowired
+    UserSaleInfoMapper userSaleInfoMapper;
+
+
     Double minutePrice;
 
 
@@ -392,6 +399,14 @@ public class DealMatchServiceImpl implements DealMatchService {
 
         for(Long userId : userSaleInfoMap.keySet()){
             dealMapper.updateUserDealInfo(userSaleInfoMap.get(userId));
+            if(userSaleInfoMap.get(userId).getStatus() == StockStatusEnum.SaleSuccess){
+                userInfoMapper.updateUserInfoCash(userSaleInfoMap.get(userId).getPrice()
+                        * userSaleInfoMap.get(userId).getQuantity(), userId);
+            }else if(userSaleInfoMap.get(userId).getStatus() == StockStatusEnum.SalePartSuccess){
+                int quantity = userSaleInfoMapper.selectByKey(userSaleInfoMap.get(userId).getDealId());
+                userInfoMapper.updateUserInfoCash(userSaleInfoMap.get(userId).getPrice()
+                        * (quantity - userSaleInfoMap.get(userId).getQuantity()), userId);
+            }
         }
 
         String tName=Thread.currentThread().getName();
